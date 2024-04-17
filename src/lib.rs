@@ -38,9 +38,6 @@
 //! [`@oleganza`]: https://github.com/oleganza
 //! [`CC0`]: https://github.com/debris/tiny-keccak/blob/master/LICENSE
 
-#![no_std]
-#![deny(missing_docs)]
-
 const RHO: [u32; 24] = [
     1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 41, 56, 8, 25, 43, 62, 18, 39, 61, 20, 44,
 ];
@@ -58,6 +55,14 @@ macro_rules! keccak_function {
         #[allow(non_upper_case_globals)]
         pub fn $name(a: &mut [u64; $crate::WORDS]) {
             use crunchy::unroll;
+
+            println!("Permutation");
+
+            println!("Input:");
+
+            for a in a.iter() {
+                println!("  {:x}", a);
+            }
 
             for i in 0..$rounds {
                 let mut array: [u64; 5] = [0; 5];
@@ -117,8 +122,14 @@ macro_rules! keccak_function {
                 // Iota
                 a[0] ^= $rc[i];
             }
+
+            println!("Output:");
+
+            for a in a.iter() {
+                println!("  {:x}", a);
+            }
         }
-    }
+    };
 }
 
 #[cfg(feature = "k12")]
@@ -365,7 +376,7 @@ enum Mode {
     Squeezing,
 }
 
-struct KeccakState<P> {
+pub struct KeccakState<P> {
     buffer: Buffer,
     offset: usize,
     rate: usize,
@@ -400,7 +411,7 @@ impl<P: Permutation> KeccakState<P> {
         }
     }
 
-    fn keccak(&mut self) {
+    pub fn keccak(&mut self) {
         P::execute(&mut self.buffer);
     }
 

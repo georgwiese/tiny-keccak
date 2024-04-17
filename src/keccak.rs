@@ -14,7 +14,7 @@ use super::{bits_to_rate, keccakf::KeccakF, Hasher, KeccakState};
 /// [`Keccak SHA3 submission`]: https://keccak.team/files/Keccak-submission-3.pdf
 #[derive(Clone)]
 pub struct Keccak {
-    state: KeccakState<KeccakF>,
+    pub state: KeccakState<KeccakF>,
 }
 
 impl Keccak {
